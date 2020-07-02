@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--开启扫描注解-->
+    <context:component-scan base-package="cn.snowing"/>
+
+    <!--视图解析器对象-->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--文件所在目录-->
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <!--文件后缀名-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--前端控制器，配置什么资源不拦截-->
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <!--配置第一个拦截器-->
+        <mvc:interceptor>
+            <!--要拦截的具体方法-->
+            <mvc:mapping path="/user/*"/>
+            <!--不要拦截的方法
+            <mvc:exclude-mapping path=""/>-->
+            <!--配置拦截器对象-->
+            <bean class="cn.snowing.interceptor.MyInterceptor1"/>
+        </mvc:interceptor>
+
+        <!--配置第二个拦截器-->
+        <mvc:interceptor>
+            <!--要拦截的具体方法-->
+            <mvc:mapping path="/**"/>
+            <!--不要拦截的方法
+            <mvc:exclude-mapping path=""/>-->
+            <!--配置拦截器对象-->
+            <bean class="cn.snowing.interceptor.MyInterceptor2"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!--开启springMVC框架注解-->
+    <mvc:annotation-driven/>
+</beans>

@@ -1,0 +1,32 @@
+[
+  {
+    "messageSession": [
+      {
+        "messageId": 3,
+        "username": "123456",
+        "fUsername": "123457",
+        "messageContent": "我刚刚给师傅找斋饭，还没有",
+        "messageDate": 1592950217000
+      },
+      {
+        "messageId": 1,
+        "username": "123456",
+        "fUsername": "123457",
+        "messageContent": "老猪，今天你吃饭了吗",
+        "messageDate": 1592950137000
+      }
+    ]
+  },
+
+  {
+    "messageSession": [
+      {
+        "messageId": 5,
+        "username": "123456",
+        "fUsername": "123458",
+        "messageContent": "老沙，最近过得怎么样",
+        "messageDate": 1593530105000
+      }
+    ]
+  }
+]
