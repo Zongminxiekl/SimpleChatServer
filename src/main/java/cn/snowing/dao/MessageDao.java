@@ -1,6 +1,7 @@
 package cn.snowing.dao;
 
 import cn.snowing.domain.Message;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -56,4 +57,11 @@ public interface MessageDao {
             " WHERE username = #{username} and f_username = #{fUsername} " +
             " ORDER BY post_time DESC ")
     public List<Message> findMessageByfUsernameAndUsername(@Param("username") String username, @Param("fUsername") String fUsername);
+
+    /**
+     * 向Message表中插入一条记录
+     * @param msg
+     */
+    @Insert("insert into message(username,f_username,message_content,post_time) values(#{username},#{fUsername},#{messageContent},#{messageDate})")
+    public void saveMsg(Message msg);
 }

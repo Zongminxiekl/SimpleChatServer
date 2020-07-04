@@ -1,12 +1,15 @@
-package cn.snowing.services.domian;
+package cn.snowing.services.message.domian;
 
 import java.util.Date;
 
+/**
+ * MessageItem是用于展示消息列表的实体类
+ */
 public class MessageItem {
     private String username;
     private String fUsername;
     private  String nickname;
-    private String imgSrc;
+    private String head;
     private String lastMsg;
     private Date lastMsgDate;
 
@@ -34,12 +37,12 @@ public class MessageItem {
         this.nickname = nickname;
     }
 
-    public String getImgSrc() {
-        return imgSrc;
+    public String getHead() {
+        return head;
     }
 
-    public void setImgSrc(String imgSrc) {
-        this.imgSrc = imgSrc;
+    public void setHead(String head) {
+        this.head = head;
     }
 
     public String getLastMsg() {
@@ -63,7 +66,7 @@ public class MessageItem {
         return "MessageItem{" +
                 "username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
-                ", imgSrc=" + imgSrc +
+                ", head=" + head +
                 ", lastMsg='" + lastMsg + '\'' +
                 ", lastMsgDate=" + lastMsgDate +
                 '}';

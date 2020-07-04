@@ -1,6 +1,7 @@
 package cn.snowing.dao;
 
 import cn.snowing.domain.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -20,10 +21,20 @@ public interface UserDao {
     public List<User> findAll();
 
     /**通过用户名查找用户，结果唯一
-     *
+     * 仅通过用户名，应当只能查询到公开的信息
      * @param username
      * @return
      */
     @Select("select * from user where username=#{username}")
     public User findUserByUsername(String username);
+
+    /**
+     * 通过用户名和密码联系查询，结果是一条user记录的完整信息
+     * @return
+     */
+    @Select("select * from user where username=#{username} and password=#{password}")
+    public User findUserByUsernameAndPassword(User user);
+
+    @Insert("insert into user() values()")
+    public Integer saveUser(User user);
 }

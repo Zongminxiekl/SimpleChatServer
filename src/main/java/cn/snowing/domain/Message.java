@@ -3,13 +3,17 @@ package cn.snowing.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+
+/**Message表的实体类
+ *
+ */
 public class Message implements Serializable {
     private Integer messageId;
     private String username;
     private  String fUsername;
     private String messageContent;
     private Date messageDate;
-
+    private Integer type;
     public Integer getMessageId() {
         return messageId;
     }
@@ -50,6 +54,14 @@ public class Message implements Serializable {
         this.messageDate = messageDate;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -58,6 +70,7 @@ public class Message implements Serializable {
                 ", fUsername='" + fUsername + '\'' +
                 ", messageContent='" + messageContent + '\'' +
                 ", messageDate=" + messageDate +
+                ", type=" + type +
                 '}';
     }
 }

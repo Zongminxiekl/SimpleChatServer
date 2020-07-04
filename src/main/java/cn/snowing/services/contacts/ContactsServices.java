@@ -17,4 +17,10 @@ public interface ContactsServices {
      * @return
      */
     public List<Friend> findFriendListByUsername(String username);
+
+    /**
+     * 删除联系人
+     * @param f_username
+     */
+    public void deleteContact(String username, String f_username);
 }

@@ -4,11 +4,9 @@ import cn.snowing.dao.MessageDao;
 import cn.snowing.dao.UserDao;
 import cn.snowing.domain.Message;
 import cn.snowing.domain.User;
-import cn.snowing.services.domian.MessageItem;
 import cn.snowing.services.message.MessageServices;
-import cn.snowing.services.message.domian.MessageSession;
+import cn.snowing.services.message.domian.MessageItem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,17 +35,6 @@ public class MessageServicesImpl implements MessageServices {
         return messageDao.findMessageByUsername(username);
     }
 
-    @Override
-    public List<MessageSession> getMessageSessionList(String username) {
-        List<MessageSession> messageSessionList = new ArrayList<MessageSession>();
-        List<String> friendUsernameList = messageDao.findFUsernameByUsername(username);
-        for (String friendUsername : friendUsernameList) {
-            MessageSession messageSession = new MessageSession();
-            messageSession.setMessageSession( messageDao.findMessageByfUsernameAndUsername(username, friendUsername));
-            messageSessionList.add(messageSession);
-        } 
-        return messageSessionList;
-    }
 
     @Override
     public List<MessageItem> getUiMessageItemList(String username) {
@@ -70,7 +57,7 @@ public class MessageServicesImpl implements MessageServices {
             //用户信息相关
             messageItem.setNickname(friend.getNickname());
             messageItem.setFUsername(friend.getUsername());
-            messageItem.setImgSrc(friend.getHead());
+            messageItem.setHead(friend.getHead());
             messageItem.setUsername(username);
 
             //消息相关
@@ -92,5 +79,46 @@ public class MessageServicesImpl implements MessageServices {
             }
         });
         return messageItemList;
+    }
+
+    @Override
+    public void saveMsg(Message msg) {
+        messageDao.saveMsg(msg);
+    }
+
+    @Override
+    public List<Message> findMessageListByfUsernameAndUsername(String username, String fUsername) {
+        //我与联系人的消息记录
+        List<Message> msgList=new ArrayList<Message>();
+
+        //获取我发送的消息记录
+        List<Message>  msgs1=messageDao.findMessageByfUsernameAndUsername(username,fUsername);
+        //获取联系人发送的消息记录
+        List<Message>  msgs2=messageDao.findMessageByfUsernameAndUsername(fUsername,username);
+
+        //type=1表示我发送的消息
+        for (Message msg : msgs1) {
+            msg.setType(1);
+            msgList.add(msg);
+        }
+
+        //type=0表示联系人发送的消息
+        for (Message msg : msgs2) {
+            msg.setType(0);
+            msgList.add(msg);
+        }
+
+        //合并我和联系人的消息记录后，根据发送时间排序
+        Collections.sort(msgList, new Comparator<Message>() {
+
+            public int compare(Message item1, Message item2) {
+
+                Long value1 = item1.getMessageDate().getTime();
+                Long value2 = item2.getMessageDate().getTime();
+                return value1.compareTo(value2);
+            }
+        });
+
+        return  msgList;
     }
 }

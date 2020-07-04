@@ -6,12 +6,10 @@ import cn.snowing.domain.Contact;
 import cn.snowing.domain.User;
 import cn.snowing.services.contacts.ContactsServices;
 import cn.snowing.services.contacts.domain.Friend;
-import cn.snowing.utils.PasteBeanSameUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,5 +53,10 @@ public class ContactsServicesImpl implements ContactsServices {
             friendList.add(friend);
         }
         return friendList;
+    }
+
+    @Override
+    public void deleteContact(String username, String f_username) {
+        contactsDao.deleteContact(username, f_username);
     }
 }
