@@ -117,21 +117,39 @@ public class MessageServicesImpl implements MessageServices {
         List<Message> msgList=new ArrayList<Message>();
 
         //获取我发送的消息记录
-        List<Message>  msgs1=messageDao.findMessageByfUsernameAndUsername(username,fUsername);
-        //获取联系人发送的消息记录
-        List<Message>  msgs2=messageDao.findMessageByfUsernameAndUsername(fUsername,username);
-
-        //type=1表示我发送的消息
-        for (Message msg : msgs1) {
-            msg.setType(1);
-            msgList.add(msg);
+        List<Message>  msgs1 = null;
+        List<Message>  msgs2 = null;
+        try {
+            msgs1=messageDao.findMessageByfUsernameAndUsername(username,fUsername);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            msgs2=messageDao.findMessageByfUsernameAndUsername(fUsername,username);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
-        //type=0表示联系人发送的消息
-        for (Message msg : msgs2) {
-            msg.setType(0);
-            msgList.add(msg);
+        try {
+            //type=1表示我发送的消息
+            for (Message msg : msgs1) {
+                msg.setType(1);
+                msgList.add(msg);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
+        try {
+            //type=0表示联系人发送的消息
+            for (Message msg : msgs2) {
+                msg.setType(0);
+                msgList.add(msg);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return msgList;
     }
 }

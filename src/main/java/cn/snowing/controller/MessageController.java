@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -39,8 +40,11 @@ public class MessageController {
     @RequestMapping("/saveMsg")
     public void saveMsg(@RequestBody Message msg) {
         //System.out.println("saveMsg:" + msg);
-        messageServices.saveMsg(msg);
+        //在服务器设置发送的时间
+        Date postDate = new Date();
+        msg.setMessageDate(postDate);
 
+        messageServices.saveMsg(msg);
     }
 
     /**
