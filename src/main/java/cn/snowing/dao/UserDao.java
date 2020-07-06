@@ -35,6 +35,11 @@ public interface UserDao {
     @Select("select * from user where username=#{username} and password=#{password}")
     public User findUserByUsernameAndPassword(User user);
 
-    @Insert("insert into user() values()")
-    public Integer saveUser(User user);
+    /**
+     * 专门用于注册功能的保存用户的方法
+     * @param register
+     * @return
+     */
+    @Insert("insert into user(nickname, username, password) values(#{nickname}, #{username}, #{password})")
+    public Integer saveRegisterUser(User register);
 }

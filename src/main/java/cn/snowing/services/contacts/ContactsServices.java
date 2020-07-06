@@ -23,4 +23,6 @@ public interface ContactsServices {
      * @param f_username
      */
     public void deleteContact(String username, String f_username);
+
+    void addContact(Contact contact);
 }

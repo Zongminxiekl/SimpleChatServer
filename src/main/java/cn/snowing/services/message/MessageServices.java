@@ -2,7 +2,6 @@ package cn.snowing.services.message;
 
 import cn.snowing.domain.Message;
 import cn.snowing.services.message.domian.MessageItem;
-import cn.snowing.services.message.domian.MessageSession;
 
 import java.util.List;
 

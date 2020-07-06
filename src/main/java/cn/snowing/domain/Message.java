@@ -30,11 +30,11 @@ public class Message implements Serializable {
         this.username = username;
     }
 
-    public String getfUsername() {
+    public String getFUsername() {
         return fUsername;
     }
 
-    public void setfUsername(String fUsername) {
+    public void setFUsername(String fUsername) {
         this.fUsername = fUsername;
     }
 

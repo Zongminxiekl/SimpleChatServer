@@ -50,10 +50,18 @@ public class MessageServicesImpl implements MessageServices {
             //通过用户名查询朋友的用户信息
             User friend = userDao.findUserByUsername(friendUsername);
             //通过用户名查询我和朋友的聊天消息列表
-            List<Message> friendMessageList = messageDao.findMessageByfUsernameAndUsername(username, friendUsername);
-            //得到最新的一条消息
-            Message message = friendMessageList.get(0);
+            List<Message> msgList = findMessageList(username, friendUsername);
+            Collections.sort(msgList, new Comparator<Message>() {
 
+                public int compare(Message item1, Message item2) {
+
+                    Long value1 = item1.getMessageDate().getTime();
+                    Long value2 = item2.getMessageDate().getTime();
+                    return value2.compareTo(value1);
+                }
+            });
+            //得到最新的一条消息
+             Message message = msgList.get(0);
             //用户信息相关
             messageItem.setNickname(friend.getNickname());
             messageItem.setFUsername(friend.getUsername());
@@ -74,7 +82,7 @@ public class MessageServicesImpl implements MessageServices {
                 Long value1 = item1.getLastMsgDate().getTime();
                 Long value2 = item2.getLastMsgDate().getTime();
 
-                // 按照学生的年龄进行降序排列
+                // 进行降序排列
                 return value2.compareTo(value1);
             }
         });
@@ -88,6 +96,23 @@ public class MessageServicesImpl implements MessageServices {
 
     @Override
     public List<Message> findMessageListByfUsernameAndUsername(String username, String fUsername) {
+
+        List<Message> msgList = findMessageList(username, fUsername);
+        //合并我和联系人的消息记录后，根据发送时间排序
+        Collections.sort(msgList, new Comparator<Message>() {
+
+            public int compare(Message item1, Message item2) {
+
+                Long value1 = item1.getMessageDate().getTime();
+                Long value2 = item2.getMessageDate().getTime();
+                return value1.compareTo(value2);
+            }
+        });
+
+        return  msgList;
+    }
+
+    private List<Message> findMessageList(String username, String fUsername){
         //我与联系人的消息记录
         List<Message> msgList=new ArrayList<Message>();
 
@@ -107,18 +132,6 @@ public class MessageServicesImpl implements MessageServices {
             msg.setType(0);
             msgList.add(msg);
         }
-
-        //合并我和联系人的消息记录后，根据发送时间排序
-        Collections.sort(msgList, new Comparator<Message>() {
-
-            public int compare(Message item1, Message item2) {
-
-                Long value1 = item1.getMessageDate().getTime();
-                Long value2 = item2.getMessageDate().getTime();
-                return value1.compareTo(value2);
-            }
-        });
-
-        return  msgList;
+        return msgList;
     }
 }

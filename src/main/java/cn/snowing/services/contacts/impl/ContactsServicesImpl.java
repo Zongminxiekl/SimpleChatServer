@@ -1,6 +1,7 @@
 package cn.snowing.services.contacts.impl;
 
 import cn.snowing.dao.ContactsDao;
+import cn.snowing.dao.MessageDao;
 import cn.snowing.dao.UserDao;
 import cn.snowing.domain.Contact;
 import cn.snowing.domain.User;
@@ -22,6 +23,8 @@ public class ContactsServicesImpl implements ContactsServices {
     @Autowired
     private UserDao userDao;  //通过Spring注入UserDao对象
 
+    @Autowired
+    private MessageDao messageDao; //通过Spring注入messageDao对象
     /**
      * 查询所有联系人列表
      * @return
@@ -56,7 +59,15 @@ public class ContactsServicesImpl implements ContactsServices {
     }
 
     @Override
-    public void deleteContact(String username, String f_username) {
-        contactsDao.deleteContact(username, f_username);
+    public void deleteContact(String username, String fUsername) {
+        //级联删除, 没有添加事务控制，可能会出错
+        contactsDao.deleteContact(username, fUsername);
+        messageDao.deleteMessage(username, fUsername);
+        messageDao.deleteMessage(fUsername, username);
+    }
+
+    @Override
+    public void addContact(Contact contact) {
+        contactsDao.insertContact(contact);
     }
 }

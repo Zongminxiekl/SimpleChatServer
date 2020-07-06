@@ -21,7 +21,7 @@ public class MyInterceptor2 implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("控制器前执行了...222");
+        System.out.println("控制器前执行了...");
         //request.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(request, response);
         return true;
     }
@@ -36,7 +36,7 @@ public class MyInterceptor2 implements HandlerInterceptor {
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        System.out.println("控制器后执行了...222");
+        System.out.println("控制器后执行了...");
         //request.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(request, response);
     }
 
@@ -50,6 +50,6 @@ public class MyInterceptor2 implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        System.out.println("控制器最后执行了...222");
+        System.out.println("控制器最后执行了...");
     }
 }

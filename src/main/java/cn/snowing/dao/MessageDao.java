@@ -1,6 +1,8 @@
 package cn.snowing.dao;
 
+import cn.snowing.domain.Contact;
 import cn.snowing.domain.Message;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -64,4 +66,13 @@ public interface MessageDao {
      */
     @Insert("insert into message(username,f_username,message_content,post_time) values(#{username},#{fUsername},#{messageContent},#{messageDate})")
     public void saveMsg(Message msg);
+
+
+    /**
+     * 通过用户名和密码删除消息
+     * @param username
+     * @param fUsername
+     */
+    @Delete("delete from message where username=#{username} and f_username=#{fUsername}")
+    public void deleteMessage(@Param("username") String username, @Param("fUsername") String fUsername);
 }

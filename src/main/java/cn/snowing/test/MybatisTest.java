@@ -72,7 +72,7 @@ public class MybatisTest {
     public void testSaveMessage(){
         Message msg = new Message();
         msg.setUsername("123456");
-        msg.setfUsername("123457");
+        msg.setFUsername("123457");
         msg.setMessageContent("老猪，吃我一棒！");
         msg.setMessageDate(new Date());
         MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
@@ -83,5 +83,21 @@ public class MybatisTest {
     public void testDeleteContact(){
         ContactsDao contactsDao = ac.getBean("contactsDao", ContactsDao.class);
         contactsDao.deleteContact("123456", "123457");
+    }
+
+    @Test
+    public void testRegister(){
+        UserDao userDao = ac.getBean("userDao", UserDao.class);
+        User register = new User();
+        register.setNickname("testRegister");
+        register.setUsername("testRegister");
+        register.setPassword("123456");
+        Integer row = 0;
+        try {
+            row = userDao.saveRegisterUser(register);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println(row);
     }
 }
