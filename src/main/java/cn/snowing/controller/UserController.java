@@ -6,8 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.swing.filechooser.FileSystemView;
+import java.io.*;
 import java.util.List;
 
 @Controller
@@ -42,4 +48,67 @@ public class UserController {
         return userServices.searchUser(username);
     }
 
+
+    @RequestMapping("/image/head")
+    public @ResponseBody String getHead(@RequestParam("imageName") String imageName, HttpServletRequest request,
+                                        HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        String url = session.getServletContext().getRealPath("/") + "images/head/" + imageName + ".png";
+        System.out.println(url);
+        File file = new File(url);
+
+        byte[] img = new byte[0];
+        if (file.exists()){
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                assert fis != null;
+                img = toByteArray(fis);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            String commentUrl = session.getServletContext().getRealPath("/") + "images/head/"  + "comment.png";
+            File file1 = new File(commentUrl);
+            FileInputStream fis1 = null;
+            try {
+                fis1 = new FileInputStream(file1);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                assert fis1 != null;
+                img = toByteArray(fis1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // img为图片的二进制流
+        response.setContentType("image/png");
+        OutputStream os = null;
+        try {
+            os = response.getOutputStream();
+            os.write(img);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "success";
+    }
+
+    private byte[] toByteArray(InputStream input) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024*4];
+        int n = 0;
+        while (-1 != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+        }
+        return output.toByteArray();
+    }
 }

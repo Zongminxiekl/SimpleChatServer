@@ -1,5 +1,6 @@
 package cn.snowing.services.message.impl;
 
+import cn.snowing.dao.ContactsDao;
 import cn.snowing.dao.MessageDao;
 import cn.snowing.dao.UserDao;
 import cn.snowing.domain.Message;
@@ -26,6 +27,8 @@ public class MessageServicesImpl implements MessageServices {
     @Autowired
     private UserDao userDao;  //通过Spring注入UserDao对象
 
+    @Autowired
+    private ContactsDao contactsDao;
     public List<Message> findAll() {
         System.out.println("msgServicesFindAll执行了");
         return messageDao.findAll();
@@ -42,7 +45,7 @@ public class MessageServicesImpl implements MessageServices {
         List<MessageItem> messageItemList = new ArrayList<MessageItem>();
 
         //消息列表的朋友的用户名
-        List<String> friendUsernameList = messageDao.findFUsernameByUsername(username);
+        List<String> friendUsernameList = contactsDao.findFUsernameByUsername(username);
 
         //通过朋友的用户名查询其相关信息
         for (String friendUsername : friendUsernameList) {

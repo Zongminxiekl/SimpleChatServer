@@ -23,6 +23,7 @@
 
     <!--前端控制器，配置什么资源不拦截-->
     <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/images/**" location="/images/"/>
     <!--配置拦截器-->
     <mvc:interceptors>
         <!--配置第一个拦截器-->
