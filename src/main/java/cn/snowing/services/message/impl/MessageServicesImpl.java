@@ -50,32 +50,37 @@ public class MessageServicesImpl implements MessageServices {
         //通过朋友的用户名查询其相关信息
         for (String friendUsername : friendUsernameList) {
             MessageItem messageItem = new MessageItem();
-            //通过用户名查询朋友的用户信息
-            User friend = userDao.findUserByUsername(friendUsername);
-            //通过用户名查询我和朋友的聊天消息列表
-            List<Message> msgList = findMessageList(username, friendUsername);
-            Collections.sort(msgList, new Comparator<Message>() {
+            try {
+                //通过用户名查询朋友的用户信息
+                User friend = userDao.findUserByUsername(friendUsername);
+                //通过用户名查询我和朋友的聊天消息列表
+                List<Message> msgList = findMessageList(username, friendUsername);
+                Collections.sort(msgList, new Comparator<Message>() {
 
-                public int compare(Message item1, Message item2) {
+                    public int compare(Message item1, Message item2) {
 
-                    Long value1 = item1.getMessageDate().getTime();
-                    Long value2 = item2.getMessageDate().getTime();
-                    return value2.compareTo(value1);
-                }
-            });
-            //得到最新的一条消息
-             Message message = msgList.get(0);
-            //用户信息相关
-            messageItem.setNickname(friend.getNickname());
-            messageItem.setFUsername(friend.getUsername());
-            messageItem.setHead(friend.getHead());
-            messageItem.setUsername(username);
+                        Long value1 = item1.getMessageDate().getTime();
+                        Long value2 = item2.getMessageDate().getTime();
+                        return value2.compareTo(value1);
+                    }
+                });
+                //得到最新的一条消息
+                Message message = msgList.get(0);
+                //用户信息相关
+                messageItem.setNickname(friend.getNickname());
+                messageItem.setFUsername(friend.getUsername());
+                messageItem.setHead(friend.getHead());
+                messageItem.setUsername(username);
 
-            //消息相关
-            messageItem.setLastMsg(message.getMessageContent());
-            messageItem.setLastMsgDate(message.getMessageDate());
+                //消息相关
+                messageItem.setLastMsg(message.getMessageContent());
+                messageItem.setLastMsgDate(message.getMessageDate());
 
-            messageItemList.add(messageItem);
+                messageItemList.add(messageItem);
+            }catch (Exception e){
+                //e.printStackTrace();
+            }
+
         }
 
         Collections.sort(messageItemList, new Comparator<MessageItem>() {

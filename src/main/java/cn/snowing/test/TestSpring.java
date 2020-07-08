@@ -6,6 +6,7 @@ import cn.snowing.domain.User;
 import cn.snowing.services.contacts.ContactsServices;
 import cn.snowing.services.contacts.domain.Friend;
 import cn.snowing.services.message.MessageServices;
+import cn.snowing.services.message.domian.MessageItem;
 import cn.snowing.services.user.UserServices;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +19,55 @@ import java.util.List;
  */
 public class TestSpring {
     ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+
+    @Test
+    public void testLogin(){
+        UserServices userServices = ac.getBean("userServices", UserServices.class);
+        User user=new User();
+        user.setUsername("123456");
+        user.setPassword("123456");
+        User loginUser = userServices.login(user);
+        System.out.println(loginUser);
+    }
+
+    @Test
+    public void testRegister(){
+        UserServices userServices = ac.getBean("userServices", UserServices.class);
+        User register = new User();
+        register.setNickname("register");
+        register.setUsername("register");
+        register.setPassword("123456");
+        User registerUser = userServices.register(register);
+        System.out.println(registerUser);
+    }
+
+    @Test
+    public void testSearchUser(){
+        UserServices userServices = ac.getBean("userServices", UserServices.class);
+        List<User> userList = userServices.searchUser("123457");
+        for (User user : userList) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    public void testGetUiMessageItemList(){
+        MessageServices ms = (MessageServices) ac.getBean("messageServices");
+        List<MessageItem> uiMessageItemList = ms.getUiMessageItemList("123456");
+        for (MessageItem messageItem : uiMessageItemList) {
+            System.out.println(messageItem);
+        }
+    }
+
+    @Test
+    public void testFindMessageListByfUsernameAndUsername(){
+        MessageServices messageServices = ac.getBean("messageServices", MessageServices.class);
+        List<Message> messageList = messageServices.findMessageListByfUsernameAndUsername("123456", "123457");
+        for (Message message : messageList) {
+            System.out.println(message);
+        }
+    }
+
     @Test
     public void run1(){
         // 获取对象
@@ -48,36 +98,9 @@ public class TestSpring {
         }
     }
 
-    @Test
-    public void testLogin(){
-        UserServices userServices = ac.getBean("userServices", UserServices.class);
-        User user=new User();
-        user.setUsername("123457");
-        user.setPassword("123456");
-        User loginUser = userServices.login(user);
-        System.out.println(loginUser);
-    }
-
-    @Test
-    public void testFindMessageListByfUsernameAndUsername(){
-        MessageServices messageServices = ac.getBean("messageServices", MessageServices.class);
-        List<Message> messageList = messageServices.findMessageListByfUsernameAndUsername("123456", "123457");
-        for (Message message : messageList) {
-            System.out.println(message);
-        }
-    }
 
 
-    @Test
-    public void testRegister(){
-        UserServices userServices = ac.getBean("userServices", UserServices.class);
-        User register = new User();
-        register.setNickname("testRegister");
-        register.setUsername("testRegister");
-        register.setPassword("123456");
-        User registerUser = userServices.register(register);
-        System.out.println(registerUser);
-    }
+
 
     @Test
     public void testDeleteContact(){

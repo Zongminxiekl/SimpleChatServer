@@ -2,6 +2,7 @@ package cn.snowing.dao;
 
 import cn.snowing.domain.User;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -41,5 +42,6 @@ public interface UserDao {
      * @return
      */
     @Insert("insert into user(nickname, username, password) values(#{nickname}, #{username}, #{password})")
+    @Options(useGeneratedKeys=true, keyColumn="uid", keyProperty = "uid")
     public Integer saveRegisterUser(User register);
 }
