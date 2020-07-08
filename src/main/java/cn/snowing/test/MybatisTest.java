@@ -21,69 +21,32 @@ public class MybatisTest {
     ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 
     @Test
-    public void testFindFUsernameByUsername(){
-        MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
-        String username = "123456";
-        List<String> friendUsernameList = messageDao.findFUsernameByUsername(username);
-        for (String s : friendUsernameList) {
-            System.out.println(s);
-        }
-        int i = 0;
-        for (String friendUsername : friendUsernameList) {
-            System.out.println("第" + (++i) + "个消息会话");
-            List<Message> messageSession = messageDao.findMessageByfUsernameAndUsername(username, friendUsername);
+    public void testUserFindAll(){
+        UserDao userDao = ac.getBean("userDao", UserDao.class);
+        List<User> userList = userDao.findAll();
+        for (User user : userList) {
+            System.out.println(user);
         }
     }
 
     @Test
-    public void testMessageByfUsernameAndUsername(){
-        MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
-        List<Message> messageByfUsernameAndUsername = messageDao.findMessageByfUsernameAndUsername("123456", "123459");
-        for (Message message : messageByfUsernameAndUsername) {
-            System.out.println(message);
-        }
-    }
-
-    @Test
-    public void testFindContactsByUsername(){
-        ContactsDao contactsDao = ac.getBean("contactsDao", ContactsDao.class);
-//        List<Contact> contactList = contactsDao.findAll();
-//        for (Contact contact : contactList) {
-//            System.out.println(contact);
-//        }
-
-        List<Contact> contactList = contactsDao.findContactsByUsername("123456");
-        for (Contact contact : contactList) {
-            System.out.println(contact);
-        }
+    public void testUseByUsername(){
+        UserDao userDao = ac.getBean("userDao", UserDao.class);
+        User user = userDao.findUserByUsername("123456");
+        System.out.println(user);
     }
 
     @Test
     public void testFindUserByUsernameAndPassword(){
         User user=new User();
-        user.setUsername("123457");
-        user.setPassword("123458");
+        user.setUsername("123456");
+        user.setPassword("123456");
         UserDao userDao = ac.getBean("userDao", UserDao.class);
         User user1 = userDao.findUserByUsernameAndPassword(user);
         System.out.println(user1);
     }
 
-    @Test
-    public void testSaveMessage(){
-        Message msg = new Message();
-        msg.setUsername("123456");
-        msg.setFUsername("123457");
-        msg.setMessageContent("老猪，吃我一棒！");
-        msg.setMessageDate(new Date());
-        MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
-        messageDao.saveMsg(msg);
-    }
 
-    @Test
-    public void testDeleteContact(){
-        ContactsDao contactsDao = ac.getBean("contactsDao", ContactsDao.class);
-        contactsDao.deleteContact("123456", "123457");
-    }
 
     @Test
     public void testRegister(){
@@ -100,4 +63,90 @@ public class MybatisTest {
         }
         System.out.println(row);
     }
+
+
+
+
+    @Test
+    public void testMessageFindAll(){
+        MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
+        List<Message> messageList = messageDao.findAll();
+        for (Message message : messageList) {
+            System.out.println(message);
+        }
+    }
+
+    @Test
+    public void testFindMessageByUsername(){
+        MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
+        List<Message> message = messageDao.findMessageByUsername("123456");
+        for (Message message1 : message) {
+            System.out.println(message1);
+        }
+    }
+
+    @Test
+    public void testFindMessageByfUsernameAndUsername(){
+        MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
+        List<Message> messageList = messageDao.findMessageByfUsernameAndUsername("123456", "123457");
+        for (Message message : messageList) {
+            System.out.println(message);
+        }
+    }
+
+    @Test
+    public void testSaveMsg(){
+        MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
+        Message message = new Message();
+        message.setUsername("123457");
+        message.setFUsername("123456");
+        message.setMessageContent("哈哈");
+        message.setMessageDate(new Date());
+        Integer integer = messageDao.saveMsg(message);
+        System.out.println(integer);
+    }
+
+    @Test
+    public void testDeleteMessage(){
+        MessageDao messageDao = ac.getBean("messageDao", MessageDao.class);
+        Integer integer = messageDao.deleteMessage("123457", "123456");
+        System.out.println(integer);
+    }
+
+    @Test
+    public void testFindContactsAll(){
+        ContactsDao contactsDao = ac.getBean("contactsDao", ContactsDao.class);
+        List<Contact> contactList = contactsDao.findAll();
+        for (Contact contact : contactList) {
+            System.out.println(contact);
+        }
+    }
+
+    @Test
+    public void testFindContactsByUsername(){
+        ContactsDao contactsDao = ac.getBean("contactsDao", ContactsDao.class);
+        List<Contact> contactList = contactsDao.findContactsByUsername("123456");
+        for (Contact contact : contactList) {
+            System.out.println(contact);
+        }
+    }
+
+
+    @Test
+    public void testDeleteContact(){
+        ContactsDao contactsDao = ac.getBean("contactsDao", ContactsDao.class);
+        contactsDao.deleteContact("123456", "123457");
+    }
+
+    @Test
+    public void testInsertContact(){
+        ContactsDao contactsDao = ac.getBean("contactsDao", ContactsDao.class);
+        Contact contact = new Contact();
+        contact.setUsername("123456");
+        contact.setFUsername("123457");
+        contact.setRemark("八戒");
+        Integer integer = contactsDao.insertContact(contact);
+        System.out.println(integer);
+    }
+
 }

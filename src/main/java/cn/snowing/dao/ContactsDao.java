@@ -35,12 +35,12 @@ public interface ContactsDao {
 
     //通过用户包和好友的用户名删除联系人记录
     @Delete("delete from contacts where f_username=#{f_username} and username=#{username}" )
-    public void deleteContact(@Param("username")String username, @Param("f_username")String f_username);
+    public Integer deleteContact(@Param("username")String username, @Param("f_username")String f_username);
 
     /**
      * 添加一条联系人记录
      * @param contact
      */
     @Insert("insert into contacts(username, f_username, remark) values(#{username}, #{fUsername}, #{remark})")
-    public void insertContact(Contact contact);
+    public Integer insertContact(Contact contact);
 }

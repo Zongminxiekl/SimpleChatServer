@@ -39,13 +39,6 @@ public interface MessageDao {
             " from message where username = #{username}")
     public List<Message> findMessageByUsername(String username);
 
-    /**
-     * 查询与用户通信的朋友的用户名，因为和好友之间会有多个消息记录。因此要使用DISTINCT关键字去重
-     * @param username
-     * @return
-     */
-    @Select("SELECT DISTINCT f_username  from message WHERE username = #{username}")
-    public List<String> findFUsernameByUsername(String username);
 
     /**
      * 查询与用户通信的朋友的用户名
@@ -65,7 +58,7 @@ public interface MessageDao {
      * @param msg
      */
     @Insert("insert into message(username,f_username,message_content,post_time) values(#{username},#{fUsername},#{messageContent},#{messageDate})")
-    public void saveMsg(Message msg);
+    public Integer saveMsg(Message msg);
 
 
     /**
@@ -74,5 +67,5 @@ public interface MessageDao {
      * @param fUsername
      */
     @Delete("delete from message where username=#{username} and f_username=#{fUsername}")
-    public void deleteMessage(@Param("username") String username, @Param("fUsername") String fUsername);
+    public Integer deleteMessage(@Param("username") String username, @Param("fUsername") String fUsername);
 }
